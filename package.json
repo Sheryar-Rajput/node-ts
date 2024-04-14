@@ -1,0 +1,28 @@
+{
+  "name": "backend-test",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migration-status": "npx sequelize-cli db:migrate:status"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "nodemon": "^3.1.0",
+    "pg": "8.11.5",
+    "sequelize": "^6.12.0",
+    "sequelize-typescript": "^2.1.0",
+    "ts-node": "^10.9.1"
+  }
+}
