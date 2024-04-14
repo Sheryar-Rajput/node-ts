@@ -14,12 +14,14 @@ const customerUpdate = (req: Request, res: Response): any => {
 };
 
 const getCustomer = (req: Request, res: Response): any => {
-  const customerId = +req.params.customerId;
+  const customerId = Number(req.params.customerId);
   return getCustomerById(customerId);
 };
 
 const getCustomers = (req: Request, res: Response): any => {
-  return getAllCustomer();
+  const offset = Number(req.query.offset);
+  const limit = Number(req.query.limit);
+  return getAllCustomer(limit, offset);
 };
 
 export { customerCreate, customerUpdate, getCustomer, getCustomers };

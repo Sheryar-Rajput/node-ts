@@ -4,13 +4,25 @@
     "password": "0AQI7iXxcleM",
     "database": "my-app",
     "dialect": "postgres",
-    "host": "ep-tiny-band-a12rtjay.ap-southeast-1.aws.neon.tech"
+    "host": "ep-tiny-band-a12rtjay.ap-southeast-1.aws.neon.tech",
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true
+      }
+    }
   },
   "production": {
     "username": "my-app_owner",
     "password": "0AQI7iXxcleM",
     "database": "my-app",
     "dialect": "postgres",
-    "host": "ep-tiny-band-a12rtjay.ap-southeast-1.aws.neon.tech"
+    "host": "ep-tiny-band-a12rtjay.ap-southeast-1.aws.neon.tech",
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true
+      }
+    }
   }
 }

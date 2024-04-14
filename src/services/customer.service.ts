@@ -19,6 +19,7 @@ async function updateCustomer(payload: CustomerUpdate) {
     const result = await Customer.findOne({
       where: {
         id: payload.id,
+        isActive: true,
       },
     });
     if (!result) {
@@ -36,6 +37,7 @@ async function getCustomerById(customerId: number) {
     const result = Customer.findOne({
       where: {
         id: customerId,
+        isActive: true,
       },
     });
     return result;
@@ -44,9 +46,19 @@ async function getCustomerById(customerId: number) {
   }
 }
 
-async function getAllCustomer() {
-  const result = Customer.findAll({});
-  return result;
+async function getAllCustomer(limit?: number, offset?: number) {
+  const result = await Customer.findAndCountAll({
+    where: {
+      isActive: true,
+    },
+    limit: limit || 10,
+    offset: offset || 0,
+  });
+
+  return {
+    total: result.count,
+    result: result.rows,
+  };
 }
 
 export { createCustomer, updateCustomer, getAllCustomer, getCustomerById };

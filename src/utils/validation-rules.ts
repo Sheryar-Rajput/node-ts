@@ -38,7 +38,7 @@ const validationRules = {
       .optional()
       .isNumeric()
       .withMessage("Invalid must be a number"),
-    query("start")
+    query("offset")
       .optional()
       .isNumeric()
       .withMessage("Invalid must be a number"),
@@ -80,7 +80,7 @@ const validationRules = {
       .optional()
       .isNumeric()
       .withMessage("Invalid must be a number"),
-    query("start")
+    query("offset")
       .optional()
       .isNumeric()
       .withMessage("Invalid must be a number"),

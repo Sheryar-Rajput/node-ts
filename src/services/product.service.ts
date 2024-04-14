@@ -19,6 +19,7 @@ async function updateProduct(payload: ProductUpdate) {
     const result = await Product.findOne({
       where: {
         id: payload.id,
+        activeFlag: true,
       },
     });
     if (!result) {
