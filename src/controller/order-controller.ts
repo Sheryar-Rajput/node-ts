@@ -8,7 +8,9 @@ const orderUpdate = (req: Request, res: Response) => {
 };
 
 const getOrderDetail = (req: Request): any => {
-  return orderDetail();
+  const limit = Number(req.query.limit);
+  const offset = Number(req.query.offset);
+  return orderDetail(offset, limit);
 };
 
 export { orderCreate, orderUpdate, getOrderDetail };

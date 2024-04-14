@@ -1,4 +1,5 @@
 import { createOrder } from "../interfaces/order.interface";
+import { Customer } from "../models/customer";
 import { Order } from "../models/order";
 import { Product } from "../models/product";
 import { InternalServerError, NotFoundError } from "../utils/exceptions";
@@ -24,12 +25,22 @@ async function createOrder(paylaod: createOrder) {
   }
 }
 
-async function orderDetail() {
+async function orderDetail(offset?: number, limit?: number) {
   const result = await Order.findAll({
-    include: {
-      model: Product,
-      as: "product",
-    },
+    include: [
+      {
+        model: Product,
+        as: "product",
+        attributes: ["name"],
+      },
+      {
+        model: Customer,
+        as: "customer",
+        attributes: ["name"],
+      },
+    ],
+    limit: limit || 10,
+    offset: offset || 0,
   });
   return result;
 }
