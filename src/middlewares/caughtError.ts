@@ -17,28 +17,12 @@ function returnError(
     .send((err as any).message || "Oops, something went wrong");
 }
 
-function isOperationalError(error: Error): boolean {
-  if (error instanceof BaseError) {
-    return (error as BaseError).isOperational;
-  }
-  return false;
-}
-
 const handleResponse =
-  (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) =>
+  (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) =>
   (req: Request, res: Response, next: NextFunction): void => {
     Promise.resolve(fn(req, res, next))
       .then((d) => res.status(HttpStatusCodes.OK).json(d))
       .catch(next);
   };
 
-const requestCaught = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
-  // errorLogger.info(req.body);
-  next();
-};
-
-export { handleResponse, returnError, isOperationalError, requestCaught };
+export { handleResponse, returnError };

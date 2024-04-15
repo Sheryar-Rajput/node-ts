@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import {
   createProduct,
   getProductById,
@@ -7,28 +7,32 @@ import {
   getMostBoughtProduct,
   getMostBoughtProducts,
 } from "../services/product.service";
-const productCreate = (req: Request): any => {
+import { ProductResponse } from "../interfaces/product.interface";
+async function productCreate(req: Request): Promise<ProductResponse> {
   return createProduct(req.body);
-};
-const productUpdate = (req: Request): any => {
+}
+async function productUpdate(req: Request): Promise<ProductResponse> {
   return updateProduct(req.body);
-};
+}
 
-const productGetById = (req: Request): any => {
+async function productGetById(req: Request): Promise<ProductResponse> {
   return getProductById(Number(req.params.productId));
-};
+}
 
-const getAllProducts = (req: Request): any => {
+async function getAllProducts(req: Request): Promise<{
+  totalCounts: number;
+  data: ProductResponse[];
+}> {
   const offset = Number(req.query.offset);
   const limit = Number(req.query.limit);
   return getAllProduct(limit, offset);
-};
+}
 
-const mostBoughtProduct = (req: Request): any => {
+async function mostBoughtProduct(req: Request): Promise<any> {
   return getMostBoughtProduct();
-};
+}
 
-const mostBoughtProducts = (req: Request): any => {
+const mostBoughtProducts = (req: Request): Promise<any> => {
   const offset = Number(req.query.offset);
   const limit = Number(req.query.limit);
   return getMostBoughtProducts(limit, offset);

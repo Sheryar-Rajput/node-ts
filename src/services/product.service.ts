@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize";
 import { ProductCreate, ProductUpdate } from "../interfaces/product.interface";
 import { Product } from "../models/product";
 import { InternalServerError, NotFoundError } from "../utils/exceptions";
@@ -57,8 +56,13 @@ async function getProductById(productId: number) {
     const result = await Product.findOne({
       where: {
         activeFlag: true,
+        id: productId,
       },
     });
+
+    if (!result) {
+      throw new NotFoundError("Product Not Found");
+    }
     return result;
   } catch (error: any) {
     throw new InternalServerError(error.message);
@@ -89,21 +93,40 @@ async function getMostBoughtProducts(limit?: number, offset?: number) {
       offset: offset || 0,
     });
 
+    // Sort the most bought products based on customer preference
+    const sortedProducts = mostBoughtProducts.map((product) => ({
+      productId: product.productId,
+      // @ts-ignore
+      productName: product.name,
+      total: product.total,
+    }));
+
     // Calculate the total number of products bought
     const totalProductsBought = await Order.count();
 
     // Calculate the percentage of each category bought by customers
     const categoryPercentage = await (
-      await Product.findAll({
-        attributes: ["category", [db.fn("COUNT", "category"), "total"]],
-        group: ["category"],
+      await Order.findAll({
+        include: [
+          {
+            model: Product,
+            as: "product",
+            attributes: [],
+          },
+        ],
+        attributes: [
+          [db.fn("COUNT", "Product.category"), "total"],
+          [db.literal("Product.category"), "category"],
+        ],
+        group: ["product.category"],
+        order: [[db.literal("total"), "DESC"]],
+        raw: true,
         limit: limit || 10,
         offset: offset || 0,
       })
     ).map((product: any) => ({
       category: product.category,
-      percentage:
-        (Number(product.dataValues.total) / totalProductsBought) * 100,
+      percentage: (Number(product.total) / totalProductsBought) * 100,
     }));
 
     // Sort the categoryPercentage array based on percentage in descending order
@@ -113,14 +136,6 @@ async function getMostBoughtProducts(limit?: number, offset?: number) {
     categoryPercentage.forEach((category) => {
       category.percentage = Number(category.percentage.toFixed(2));
     });
-
-    // Sort the most bought products based on customer preference
-    const sortedProducts = mostBoughtProducts.map((product) => ({
-      productId: product.productId,
-      // @ts-ignore
-      productName: product.name,
-      total: product.total,
-    }));
 
     return { mostBoughtProducts: sortedProducts, categoryPercentage };
   } catch (error: any) {

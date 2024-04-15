@@ -14,3 +14,12 @@ export interface ProductUpdate {
   activeFlag?: boolean;
   category?: string;
 }
+
+export interface ProductResponse {
+  id?: number;
+  name?: string;
+  price?: number;
+  stock?: number;
+  activeFlag?: boolean;
+  category?: string;
+}

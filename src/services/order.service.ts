@@ -25,7 +25,33 @@ async function createOrder(paylaod: createOrder) {
   }
 }
 
-async function orderDetail(offset?: number, limit?: number) {
+async function orderDetail(orderId: number) {
+  const result = await Order.findOne({
+    where: {
+      id: orderId,
+    },
+    include: [
+      {
+        model: Product,
+        as: "product",
+        attributes: ["name"],
+      },
+      {
+        model: Customer,
+        as: "customer",
+        attributes: ["name"],
+      },
+    ],
+  });
+
+  if (!result) {
+    throw new NotFoundError("Order Not Found");
+  }
+
+  return result;
+}
+
+async function ordersDetail(offset?: number, limit?: number) {
   const result = await Order.findAll({
     include: [
       {
@@ -44,4 +70,5 @@ async function orderDetail(offset?: number, limit?: number) {
   });
   return result;
 }
-export { createOrder, orderDetail };
+
+export { createOrder, orderDetail, ordersDetail };

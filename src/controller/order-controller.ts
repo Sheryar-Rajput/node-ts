@@ -1,16 +1,23 @@
-import { Request, Response } from "express";
-import { createOrder, orderDetail } from "../services/order.service";
-const orderCreate = (req: Request, res: Response): any => {
+import { Request } from "express";
+import {
+  createOrder,
+  orderDetail,
+  ordersDetail,
+} from "../services/order.service";
+import { OrderResponse } from "../interfaces/order.interface";
+const orderCreate = (req: Request): Promise<OrderResponse> => {
   return createOrder(req.body);
 };
-const orderUpdate = (req: Request, res: Response) => {
-  return;
+
+const getOrderDetail = (req: Request): Promise<OrderResponse> => {
+  const orderId = Number(req.params.orderId);
+  return orderDetail(orderId);
 };
 
-const getOrderDetail = (req: Request): any => {
+const getOrdersDetail = (req: Request): Promise<OrderResponse[]> => {
   const limit = Number(req.query.limit);
   const offset = Number(req.query.offset);
-  return orderDetail(offset, limit);
+  return ordersDetail(offset, limit);
 };
 
-export { orderCreate, orderUpdate, getOrderDetail };
+export { orderCreate, getOrderDetail, getOrdersDetail };

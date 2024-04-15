@@ -12,3 +12,11 @@ export interface CustomerUpdate {
   cardNumber?: string;
   phoneNumber?: string;
 }
+
+export interface CustomerResponse {
+  id?: number;
+  name?: string;
+  email?: string;
+  cardNumber?: string;
+  phoneNumber?: string;
+}

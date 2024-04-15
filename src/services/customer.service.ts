@@ -34,12 +34,15 @@ async function updateCustomer(payload: CustomerUpdate) {
 
 async function getCustomerById(customerId: number) {
   try {
-    const result = Customer.findOne({
+    const result = await Customer.findOne({
       where: {
         id: customerId,
         isActive: true,
       },
     });
+    if (!result) {
+      throw new NotFoundError("Customer Not Found");
+    }
     return result;
   } catch (error: any) {
     throw new InternalServerError(error.message);

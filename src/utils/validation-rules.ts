@@ -117,6 +117,16 @@ const validationRules = {
       .isNumeric()
       .withMessage("quantity must be numeric"),
   ],
+  orderDetailsValidationRules: [
+    query("limit")
+      .optional()
+      .isNumeric()
+      .withMessage("Invalid must be a number"),
+    query("offset")
+      .optional()
+      .isNumeric()
+      .withMessage("Invalid must be a number"),
+  ],
 };
 
 export default validationRules;
