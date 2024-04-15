@@ -18,11 +18,11 @@ router.post(
 router.get(
   "/list",
   validate(validationRules.orderDetailsValidationRules),
-  handleResponse(getOrderDetail)
+  handleResponse(getOrdersDetail)
 );
 router.get(
   "/:orderId",
   validate(validationRules.orderDetailValidationRules),
-  handleResponse(getOrdersDetail)
+  handleResponse(getOrderDetail)
 );
 export default router;
